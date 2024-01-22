@@ -24,55 +24,55 @@ using namespace std;
 
 int main()
 {
-	//测试代码
-	Employee* worker1 = NULL;
-	worker1 = new Employee(1, "张三", 1);
-	worker1->ShowInfo();
+	////测试代码
+	//Employee* worker1 = NULL;
+	//worker1 = new Employee(1, "张三", 1);
+	//worker1->ShowInfo();
 
-	Manager* worker2 = NULL;
-	worker2 = new Manager(2, "王五", 1);
-	worker2->ShowInfo();
+	//Manager* worker2 = NULL;
+	//worker2 = new Manager(2, "王五", 1);
+	//worker2->ShowInfo();
 
-	Boss* worker3 = NULL;
-	worker3 = new Boss(3, "李四", 1);
-	worker3->ShowInfo();
+	//Boss* worker3 = NULL;
+	//worker3 = new Boss(3, "李四", 1);
+	//worker3->ShowInfo();
 
-	//WorkManager wm;
+	WorkManager wm;
 
-	////记录用户输入
-	//int choice;
+	//记录用户输入
+	int choice;
 
-	//while (1)
-	//{
-	//	wm.ShowMenu();
+	while (1)
+	{
+		wm.ShowMenu();
 
-	//	cout << "请输入您的选择：";
-	//	cin >> choice;
-	//	cout << endl;
+		cout << "请输入您的选择：";
+		cin >> choice;
+		cout << endl;
 
-	//	switch (choice)
-	//	{
-	//	case 0:wm.ExitSystem(); //退出系统
-	//		break;
-	//	case 1:; //增加员工信息
-	//		break;
-	//	case 2:; //显示职工信息
-	//		break;
-	//	case 3:; //删除离职职工
-	//		break;
-	//	case 4:; //修改职工信息
-	//		break;
-	//	case 5:; //查找职工信息
-	//		break;
-	//	case 6:; //按照编号排序
-	//		break;
-	//	case 7:; //清空所有文档
-	//		break;
-	//	default:system("cls"); //清屏
-	//		break;
-	//	}
+		switch (choice)
+		{
+		case 0:wm.ExitSystem(); //退出系统
+			break;
+		case 1:wm.addEmp(); //增加员工信息
+			break;
+		case 2:; //显示职工信息
+			break;
+		case 3:; //删除离职职工
+			break;
+		case 4:; //修改职工信息
+			break;
+		case 5:; //查找职工信息
+			break;
+		case 6:; //按照编号排序
+			break;
+		case 7:; //清空所有文档
+			break;
+		default:system("cls"); //清屏
+			break;
+		}
 
-	//}
+	}
 
 	system("pause");
 
