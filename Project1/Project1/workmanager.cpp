@@ -3,9 +3,53 @@ using namespace std;
 
 WorkManager::WorkManager()
 {
-	//初始化属性
-	this->m_EmpNum = 0;
-	this->m_EmpArry = NULL;
+	//打开文件
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+	//文件不存在
+	if (!ifs.is_open())
+	{
+		cout << "文件不存在！" << endl;
+		//初始化属性
+		this->m_EmpNum = 0;
+		this->m_EmpArry = NULL;
+		this->fileIsEmpty = true;
+		ifs.close();
+		return;
+	}
+
+	//判断存在文件但是文件为空
+	char ch;
+	ifs >> ch;
+	if (ifs.eof())//ifs.efo()为读到文件中的第一个字符为文件尾，若为true则代表文件为空
+	{
+		cout << "文件存在但为空" << endl;
+		//初始化属性
+		this->m_EmpArry = 0;
+		this->m_EmpNum = NULL;
+		this->fileIsEmpty = true;
+		ifs.close();
+		return;
+	}
+
+	//文件存在且有记录
+	int num = getEmpNum();
+	this->m_EmpNum = num;
+	//this->m_EmpNum = this->getEmpNum();
+	cout << "有" << num << "个职工记录！" << endl;
+
+	//创建空间
+	this->m_EmpArry = new Worker * [num];
+	//将文件中的数据存储到数组
+	this->initArray();
+
+	//inieArray()测试代码
+	for (int i = 0; i < num; i++)
+	{
+		cout << "编号：" << this->m_EmpArry[i]->m_Id << " "
+			<< "姓名：" << this->m_EmpArry[i]->m_Name << endl;
+	}
 }
 
 void WorkManager::ShowMenu()
@@ -106,6 +150,8 @@ void WorkManager::addEmp()
 		this->m_EmpNum = newSize;
 
 		//写入文件
+		this->save();
+		this->fileIsEmpty = false;//文件中有数据
 
 		//提示添加成功
 		cout << "添加成功！" << endl;
@@ -117,6 +163,73 @@ void WorkManager::addEmp()
 
 	system("pause");
 	system("cls");
+}
+
+void WorkManager::save()
+{
+	ofstream ofs;
+	//打开文件
+	ofs.open(FILENAME, ios::out);
+
+	for (int i = 0; i < this->m_EmpNum; i++)
+	{
+		ofs << this->m_EmpArry[i]->m_Id << " "
+			<< this->m_EmpArry[i]->m_Name << " "
+			<< this->m_EmpArry[i]->m_DeptId << endl;
+	}
+
+	//关闭文件
+	ofs.close();
+}
+
+int WorkManager::getEmpNum()
+{
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+
+	int age;
+	string name;
+	int dId;
+	int num = 0;//人数
+	while (ifs >> age && ifs >> name && ifs >> dId)
+	{
+		num++;
+	}
+	ifs.close();
+	return num;
+}
+
+void WorkManager::initArray()
+{
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+	int id;
+	string name;
+	int dId;
+
+	int index = 0;//数组下标
+	while (ifs >> id && ifs >> name && ifs >> dId)
+	{
+		Worker* worker = NULL;
+		if (dId == 1)
+		{
+			worker = new Employee(id, name, dId);
+		}
+		else if (dId == 2)
+		{
+			worker = new Manager(id, name, dId);
+		}
+		else if (dId == 3)
+		{
+			worker = new Boss(id, name, dId);
+		}
+
+		this->m_EmpArry[index] = worker;
+		index++;
+	}
+	ifs.close();
 }
 
 WorkManager::~WorkManager()
