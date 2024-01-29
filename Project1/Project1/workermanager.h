@@ -33,6 +33,12 @@ public:
 	int getEmpNum();
 	//初始化
 	void initArray();
+	//显示职工信息
+	void showEmp();
+	//删除职工信息
+	void delEmp();
+	//判断职工是否存在
+	int isExist(int id);
 
 	~WorkManager();
 };

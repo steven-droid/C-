@@ -90,7 +90,7 @@ void WorkManager::addEmp()
 		int newSize = this->m_EmpNum + addNum;
 
 		//开辟新空间
-		Worker** newSpace = new Worker * [newSize];
+		Worker** newSpace = new Worker* [newSize];
 
 		//将原来数据拷贝到新的空间
 		if (this->m_EmpArry != NULL)
@@ -117,12 +117,21 @@ void WorkManager::addEmp()
 			cin >> name;
 			cout << endl;
 
-			cout << "请输入第" << i + 1 << "位职工的部门：" << endl;
-			cout << "1、普通职工" << endl;
-			cout << "2、经理" << endl;
-			cout << "3、老板" << endl;
-			cin >> dSelect;
-			cout << endl;
+			while (1)
+			{
+				cout << "请输入第" << i + 1 << "位职工的部门：" << endl;
+				cout << "1、普通职工" << endl;
+				cout << "2、经理" << endl;
+				cout << "3、老板" << endl;
+				cin >> dSelect;
+				if (0 < dSelect && dSelect > 3)
+				{
+					cout << "输入有误,请重新输入" << endl;
+					continue;
+				}
+				cout << endl;
+				break;
+			}
 
 			Worker* worker = NULL;
 			switch (dSelect)
@@ -230,6 +239,81 @@ void WorkManager::initArray()
 		index++;
 	}
 	ifs.close();
+}
+
+void WorkManager::showEmp()
+{
+	if (!this->fileIsEmpty)
+	{
+		for (int i = 0; i < m_EmpNum; i++)
+		{
+			//cout << "职工编号：" << m_EmpArry[i]->m_Id << " "
+			//	<< "职工姓名：" << m_EmpArry[i]->m_Name << " "
+			//	<< "职工部门：" << m_EmpArry[i]->GetDeptName() << endl;
+			this->m_EmpArry[i]->ShowInfo();
+		}
+	}
+	else
+	{
+		cout << "文件为空！" << endl;
+	}
+
+	system("pause");
+	system("cls");
+}
+
+int WorkManager::isExist(int id)
+{
+	//返回数组下标
+	int index = -1;
+
+	for (int i = 0; i < this->m_EmpNum; i++)
+	{
+		if (this->m_EmpArry[i]->m_Id == id)
+		{
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+
+void WorkManager::delEmp()
+{
+	if (!this->fileIsEmpty)
+	{
+		int id = 0;
+		while (1)
+		{
+			cout << "请输入你要删除的员工编号(输入000退出)：";
+			cin >> id;
+			int index = this->isExist(id);
+
+			if (id != 000 && index!=-1)
+			{
+				for (int i = index; i < this->m_EmpNum-1; i++)
+				{
+					this->m_EmpArry[i] = this->m_EmpArry[i + 1];
+				}
+
+				this->m_EmpNum--;//第一次误写为this->m_EmpArry--。不会报错但会发生异常
+								 //原因是将保存的地址进行自减从而可能引发的溢出
+				this->save();
+				cout << "删除成功！" << endl;
+			}
+			else if(id==000)
+			{
+				break;
+			}
+		}
+	}
+	else
+	{
+		cout << "文件为空！" << endl;
+	}
+
+	system("pause");
+	system("cls");
 }
 
 WorkManager::~WorkManager()

@@ -56,9 +56,9 @@ int main()
 			break;
 		case 1:wm.addEmp(); //增加员工信息
 			break;
-		case 2:; //显示职工信息
+		case 2:wm.showEmp(); //显示职工信息
 			break;
-		case 3:; //删除离职职工
+		case 3:wm.delEmp(); //删除离职职工
 			break;
 		case 4:; //修改职工信息
 			break;
