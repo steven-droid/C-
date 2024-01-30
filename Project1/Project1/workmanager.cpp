@@ -45,11 +45,11 @@ WorkManager::WorkManager()
 	this->initArray();
 
 	//inieArray()测试代码
-	for (int i = 0; i < num; i++)
-	{
-		cout << "编号：" << this->m_EmpArry[i]->m_Id << " "
-			<< "姓名：" << this->m_EmpArry[i]->m_Name << endl;
-	}
+	//for (int i = 0; i < num; i++)
+	//{
+	//	cout << "编号：" << this->m_EmpArry[i]->m_Id << " "
+	//		<< "姓名：" << this->m_EmpArry[i]->m_Name << endl;
+	//}
 }
 
 void WorkManager::ShowMenu()
@@ -105,6 +105,7 @@ void WorkManager::addEmp()
 		for (int i = 0; i < addNum; i++)
 		{
 			system("cls");
+			this->showEmp();
 			int id;
 			string name;
 			int dSelect;
@@ -170,8 +171,8 @@ void WorkManager::addEmp()
 		cout << "输入的数量有误" << endl;
 	}
 
-	system("pause");
-	system("cls");
+	//system("pause");
+	//system("cls");
 }
 
 void WorkManager::save()
@@ -197,11 +198,11 @@ int WorkManager::getEmpNum()
 	ifs.open(FILENAME, ios::in);
 
 
-	int age;
+	int id;
 	string name;
 	int dId;
 	int num = 0;//人数
-	while (ifs >> age && ifs >> name && ifs >> dId)
+	while (ifs >> id && ifs >> name && ifs >> dId)
 	{
 		num++;
 	}
@@ -258,8 +259,8 @@ void WorkManager::showEmp()
 		cout << "文件为空！" << endl;
 	}
 
-	system("pause");
-	system("cls");
+	//system("pause");
+	//system("cls");
 }
 
 int WorkManager::isExist(int id)
@@ -312,8 +313,107 @@ void WorkManager::delEmp()
 		cout << "文件为空！" << endl;
 	}
 
-	system("pause");
-	system("cls");
+	//system("pause");
+	//system("cls");
+}
+
+void WorkManager::modEmp()
+{
+	this->showEmp();
+	int id=0;
+	string name;
+	int dId;
+	Worker* worker = NULL;
+
+	int temp = 1;
+	while (temp)
+	{
+		cout << "请输入想修改的员工编号：";
+		cin >> id;
+		for (int i = 0; i < this->m_EmpNum; i++)
+		{
+			if (this->m_EmpArry[i]->m_Id == id)//查找到员工信息
+			{
+				cout << "查找到员工信息！" << endl;
+				//修改
+				cout << "请输入修改后的信息：" << endl;
+				cout << "职工编号：";
+				cin >> id;
+
+				cout << "职工姓名：";
+				cin >> name;
+
+				cout << "职工部门编号：" << endl;
+				cout << "1、普通职工" << endl;
+				cout << "2、经理" << endl;
+				cout << "3、老板" << endl;
+				cin >> dId;
+
+				switch(dId)
+				{
+				case 1:worker = new Employee(id, name, dId);
+					break;
+				case 2:worker = new Manager(id, name, dId);
+					break;
+				case 3:worker = new Boss(id, name, dId);
+					break;
+				}
+				this->m_EmpArry[i] = worker;
+				this->save();
+
+				cout << "修改成功！" << endl;
+				temp = 0;
+				system("pause");
+				break;
+			}
+			else//未查找到员工信息
+			{
+				if (id == 000)
+				{
+					temp = 0;
+				}
+				else
+				{
+					cout << "输入有误，请重新输入！(输入000退出该功能)" << endl;
+				}
+				break;
+			}
+		}//for
+	}//while
+	//system("pause");
+	//system("cls");
+}
+
+void WorkManager::findEmp()
+{
+	int id = 0;
+	int temp = 1;
+	while (temp)
+	{
+		cout << "请输入想查找的职工编号：";
+		cin >> id;
+		for (int i = 0; i < this->m_EmpNum; i++)
+		{
+			if (this->m_EmpArry[i]->m_Id == id)//查找到员工信息
+			{
+				cout << "查找成功！" << endl;
+				this->m_EmpArry[i]->ShowInfo();
+				temp = 0;
+			}
+			else
+			{
+				if (id == 000)
+				{
+					temp = 0;
+				}
+				else
+				{
+					cout << "查找失败！(输入000退出该功能)" << endl;
+				}
+				break;
+			}
+		}
+	}
 }
 
 WorkManager::~WorkManager()

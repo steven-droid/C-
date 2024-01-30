@@ -39,6 +39,10 @@ public:
 	void delEmp();
 	//判断职工是否存在
 	int isExist(int id);
+	//修改职工信息
+	void modEmp();
+	//查找职工信息
+	void findEmp();
 
 	~WorkManager();
 };

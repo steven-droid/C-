@@ -54,15 +54,37 @@ int main()
 		{
 		case 0:wm.ExitSystem(); //退出系统
 			break;
-		case 1:wm.addEmp(); //增加员工信息
+		case 1:
+		{
+			wm.addEmp();//增加员工信息
+			system("cls");
+		}; 
 			break;
-		case 2:wm.showEmp(); //显示职工信息
+		case 2:
+		{
+			wm.showEmp();//显示职工信息
+			system("pause");
+			system("cls");
+		};
 			break;
-		case 3:wm.delEmp(); //删除离职职工
+		case 3:
+		{
+			wm.delEmp();//删除离职职工
+			system("cls");
+		};  
 			break;
-		case 4:; //修改职工信息
+		case 4:
+		{
+			wm.modEmp();//修改职工信息
+			system("cls");
+		}; 
 			break;
-		case 5:; //查找职工信息
+		case 5:
+		{
+			wm.findEmp();//查找职工信息
+			system("pause");
+			system("cls");
+		}; 
 			break;
 		case 6:; //按照编号排序
 			break;
