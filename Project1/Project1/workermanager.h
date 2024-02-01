@@ -43,6 +43,10 @@ public:
 	void modEmp();
 	//查找职工信息
 	void findEmp();
+	//排序
+	void sortEmp();
+	//清空操作
+	void clearFile();
 
 	~WorkManager();
 };

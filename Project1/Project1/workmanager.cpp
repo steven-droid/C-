@@ -301,10 +301,21 @@ void WorkManager::delEmp()
 								 //原因是将保存的地址进行自减从而可能引发的溢出
 				this->save();
 				cout << "删除成功！" << endl;
+				if (this->m_EmpNum == 0)
+				{
+					this->fileIsEmpty = true;
+					cout << "文件已为空！" << endl;
+					return;
+				}
 			}
 			else if(id==000)
 			{
 				break;
+			}
+			else if (index = -1)
+			{
+				cout << "未找到该员工！" << endl;
+				continue;
 			}
 		}
 	}
@@ -328,57 +339,63 @@ void WorkManager::modEmp()
 	int temp = 1;
 	while (temp)
 	{
-		cout << "请输入想修改的员工编号：";
-		cin >> id;
-		for (int i = 0; i < this->m_EmpNum; i++)
+		if (this->fileIsEmpty)
 		{
-			if (this->m_EmpArry[i]->m_Id == id)//查找到员工信息
+			return;
+		}
+		else
+		{
+			cout << "请输入想修改的员工编号：";
+			cin >> id;
+			for (int i = 0; i < this->m_EmpNum; i++)
 			{
-				cout << "查找到员工信息！" << endl;
-				//修改
-				cout << "请输入修改后的信息：" << endl;
-				cout << "职工编号：";
-				cin >> id;
-
-				cout << "职工姓名：";
-				cin >> name;
-
-				cout << "职工部门编号：" << endl;
-				cout << "1、普通职工" << endl;
-				cout << "2、经理" << endl;
-				cout << "3、老板" << endl;
-				cin >> dId;
-
-				switch(dId)
+				if (this->m_EmpArry[i]->m_Id == id)//查找到员工信息
 				{
-				case 1:worker = new Employee(id, name, dId);
-					break;
-				case 2:worker = new Manager(id, name, dId);
-					break;
-				case 3:worker = new Boss(id, name, dId);
-					break;
-				}
-				this->m_EmpArry[i] = worker;
-				this->save();
+					cout << "查找到员工信息！" << endl;
+					//修改
+					cout << "请输入修改后的信息：" << endl;
+					cout << "职工编号：";
+					cin >> id;
 
-				cout << "修改成功！" << endl;
-				temp = 0;
-				system("pause");
-				break;
-			}
-			else//未查找到员工信息
-			{
-				if (id == 000)
-				{
+					cout << "职工姓名：";
+					cin >> name;
+
+					cout << "职工部门编号：" << endl;
+					cout << "1、普通职工" << endl;
+					cout << "2、经理" << endl;
+					cout << "3、老板" << endl;
+					cin >> dId;
+
+					switch (dId)
+					{
+					case 1:worker = new Employee(id, name, dId);
+						break;
+					case 2:worker = new Manager(id, name, dId);
+						break;
+					case 3:worker = new Boss(id, name, dId);
+						break;
+					}
+					this->m_EmpArry[i] = worker;
+					this->save();
+
+					cout << "修改成功！" << endl;
 					temp = 0;
+					break;
 				}
-				else
+				else//未查找到员工信息
 				{
-					cout << "输入有误，请重新输入！(输入000退出该功能)" << endl;
+					if (id == 000)
+					{
+						temp = 0;
+					}
+					else
+					{
+						cout << "输入有误，请重新输入！(输入000退出该功能)" << endl;
+					}
+					break;
 				}
-				break;
-			}
-		}//for
+			}//for
+		}
 	}//while
 	//system("pause");
 	//system("cls");
@@ -390,33 +407,120 @@ void WorkManager::findEmp()
 	int temp = 1;
 	while (temp)
 	{
-		cout << "请输入想查找的职工编号：";
-		cin >> id;
-		for (int i = 0; i < this->m_EmpNum; i++)
+		if (this->fileIsEmpty)
 		{
-			if (this->m_EmpArry[i]->m_Id == id)//查找到员工信息
+			cout << "文件为空！" << endl;
+			return;
+		}
+		else
+		{
+			cout << "请输入想查找的职工编号：";
+			cin >> id;
+			for (int i = 0; i < this->m_EmpNum; i++)
 			{
-				cout << "查找成功！" << endl;
-				this->m_EmpArry[i]->ShowInfo();
-				temp = 0;
-			}
-			else
-			{
-				if (id == 000)
+				if (this->m_EmpArry[i]->m_Id == id)//查找到员工信息
 				{
+					cout << "查找成功！" << endl;
+					this->m_EmpArry[i]->ShowInfo();
 					temp = 0;
 				}
 				else
 				{
-					cout << "查找失败！(输入000退出该功能)" << endl;
+					if (id == 000)
+					{
+						temp = 0;
+					}
+					else
+					{
+						cout << "查找失败！(输入000退出该功能)" << endl;
+					}
+					break;
 				}
-				break;
 			}
+		}
+	}
+}
+
+void WorkManager::sortEmp()
+{
+	Worker* temp;
+	if (this->fileIsEmpty)
+	{
+		cout << "文件为空，排序失败" << endl;
+	}
+	else
+	{
+		//冒泡排序（升序）
+		for (int i = 0; i < this->m_EmpNum - 1; i++)
+		{
+			if (this->m_EmpArry[i]->m_Id > this->m_EmpArry[i + 1]->m_Id)
+			{
+				temp = this->m_EmpArry[i];
+				this->m_EmpArry[i] = this->m_EmpArry[i + 1];
+				this->m_EmpArry[i + 1] = temp;
+			}
+		}
+		this->save();
+		this->showEmp();
+		cout << "排序完成！" << endl;
+	}
+}
+
+void WorkManager::clearFile()
+{
+	int select = 0;
+	if (this->fileIsEmpty)
+	{
+		cout << "文件已为空！" << endl;
+	}
+	else
+	{
+		cout << "是否清空数据？" << endl;
+		cout << "1.确定" << endl;
+		cout << "2.不清空" << endl;
+		cin >> select;
+
+		if (select == 1)
+		{
+			//清空文件中的数据
+			ofstream ofs;
+			ofs.open(FILENAME, ios::trunc);//ios::trunc为删除文件后重新创建
+			ofs.close();
+
+			//清空堆区数据
+			for (int i = 0; i < this->m_EmpNum; i++)
+			{
+				if (this->m_EmpArry[i] != NULL)
+				{
+					delete this->m_EmpArry[i];
+				}
+			}
+			this->m_EmpNum = 0;
+			delete[] this->m_EmpArry;
+			this->m_EmpArry = NULL;
+			this->fileIsEmpty = true;
+			cout << "清空成功！" << endl;
+		}//if
+		else if (select == 2)
+		{
+			return;
 		}
 	}
 }
 
 WorkManager::~WorkManager()
 {
+	if (this->m_EmpArry != NULL)
+	{
+		for (int i = 0; i < this->m_EmpNum; i++)
+		{
+			if (this->m_EmpArry[i] != NULL)
+			{
+				delete this->m_EmpArry[i];
+			}
+		}
 
+		delete[] this->m_EmpArry;
+		this->m_EmpArry = NULL;
+	}
 }

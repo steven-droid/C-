@@ -70,12 +70,14 @@ int main()
 		case 3:
 		{
 			wm.delEmp();//删除离职职工
+			system("pause");
 			system("cls");
 		};  
 			break;
 		case 4:
 		{
 			wm.modEmp();//修改职工信息
+			system("pause");
 			system("cls");
 		}; 
 			break;
@@ -86,9 +88,19 @@ int main()
 			system("cls");
 		}; 
 			break;
-		case 6:; //按照编号排序
+		case 6:
+		{
+			wm.sortEmp();
+			system("pause");
+			system("cls");
+		}; //按照编号排序
 			break;
-		case 7:; //清空所有文档
+		case 7:
+		{
+			wm.clearFile();
+			system("pause");
+			system("cls");
+		}; //清空所有文档
 			break;
 		default:system("cls"); //清屏
 			break;
